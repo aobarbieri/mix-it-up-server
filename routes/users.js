@@ -19,14 +19,9 @@ router.post('/', userCtrl.create)
 router.get('/:id', userCtrl.show)
 
 // user DELETE ROUTE
-router.delete('/:id', (req, res) => {
-	res.status(200).json({ message: 'user delete route: ' + req.params.id })
-})
+router.delete('/:id', userCtrl.delete)
 
 // user UPDATE ROUTE
-router.put('/:id', (req, res) => {
-	console.log(req.body)
-	res.status(200).json({ message: 'user update route: ' + req.params.id })
-})
+router.put('/:id', userCtrl.update)
 
 module.exports = router
