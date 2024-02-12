@@ -13,9 +13,23 @@ const { PORT } = process.env
 
 // import express
 const express = require('express')
+const cors = require('cors')
+const morgan = require('morgan')
+const usersRouter = require('./routes/users')
 
 // create application object
 const app = express()
+
+///////////////////////////////
+// MIDDLEWARE
+////////////////////////////////
+app.use(express.urlencoded({ extended: true }))
+app.use(express.json()) // parse json bodies - this will run before our request accesses the users router
+app.use(cors()) // to minimize cors errors, open access to all origins
+app.use(morgan('dev')) // logging for development
+
+// all requests for endpoints that begin with '/users'
+app.use('/users', usersRouter)
 
 ///////////////////////////////
 // ROUTES
