@@ -1,6 +1,3 @@
-///////////////////////////////
-// DEPENDENCIES
-////////////////////////////////
 const { User } = require('../models')
 
 module.exports = {
@@ -11,9 +8,6 @@ module.exports = {
 	update,
 }
 
-///////////////////////////////
-// CONTROLLER ACTIONS
-////////////////////////////////
 async function index(req, res, next) {
 	try {
 		res.json(await User.find({}))

@@ -5,13 +5,6 @@ module.exports = {
 	delete: destroy,
 }
 
-// async function index(req, res, next) {
-// 	try {
-// 	} catch (error) {
-// 		res.status(400).json(error)
-// 	}
-// }
-
 async function create(req, res, next) {
 	const user = await User.findById(req.params.id)
 	user.favorites.push(req.body)
