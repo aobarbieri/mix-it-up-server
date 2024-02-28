@@ -1,27 +1,36 @@
-///////////////////////////////
-// DEPENDENCIES
-////////////////////////////////
 const express = require('express')
 const router = express.Router()
 const userCtrl = require('../controllers/users')
 
-///////////////////////////////
-// ROUTES
-////////////////////////////////
-
-/// user INDEX ROUTE
 router.get('/', userCtrl.index)
 
-// user CREATE ROUTE
 router.post('/', userCtrl.create)
 
-// user SHOW ROUTE
 router.get('/:id', userCtrl.show)
 
-// user DELETE ROUTE
 router.delete('/:id', userCtrl.delete)
 
-// user UPDATE ROUTE
 router.put('/:id', userCtrl.update)
 
 module.exports = router
+
+//######### Google OAuth - not in use #########
+// const passport = require('passport')
+// router.get(
+// 	'/auth/google',
+// 	passport.authenticate('google', {
+// 		scope: ['profile', 'email'],
+// 	})
+// )
+// router.get(
+// 	'/oauth2callback',
+// 	passport.authenticate('google', {
+// 		successRedirect: '/user',
+// 		failureRedirect: '/',
+// 	})
+// )
+// router.get('/logout', function (req, res) {
+// 	req.logout(function () {
+// 		res.redirect('/')
+// 	})
+// })

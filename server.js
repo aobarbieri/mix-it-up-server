@@ -1,6 +1,4 @@
-///////////////////////////////
-// DEPENDENCIES
-////////////////////////////////
+const createError = require('http-errors')
 const express = require('express')
 const cors = require('cors')
 const path = require('path')
@@ -11,24 +9,20 @@ const passport = require('passport')
 
 require('dotenv').config()
 require('./config/db.connection.js')
-require('./config/passport')
-// pull PORT from .env, give default value of 4000 and establish DB Connection
 const { PORT } = process.env
+require('./config/passport')
 
-const usersRouter = require('./routes/users')
+const userRouter = require('./routes/users')
+const favoriteRouter = require('./routes/favorites')
 
-// create application object
 const app = express()
 
-///////////////////////////////
-// MIDDLEWARE
-////////////////////////////////
 app.use(express.urlencoded({ extended: true }))
-app.use(express.json()) // parse json bodies - this will run before our request accesses the users router
-app.use(cors()) // to minimize cors errors, open access to all origins
+app.use(express.json())
 app.use(cookieParser())
 app.use(express.static(path.join(__dirname, 'public')))
-app.use(morgan('dev')) // logging for development
+app.use(cors())
+app.use(morgan('dev'))
 app.use(
 	session({
 		secret: process.env.SECRET,
@@ -38,19 +32,19 @@ app.use(
 )
 app.use(passport.initialize())
 app.use(passport.session())
+app.use(function (req, res, next) {
+	res.locals.user = req.user
+	next()
+})
 
-// all requests for endpoints that begin with '/users'
-app.use('/users', usersRouter)
+app.use('/user', userRouter)
+app.use('/', favoriteRouter)
 
-///////////////////////////////
-// ROUTES
-////////////////////////////////
-// create a test route
+// test route
 app.get('/', (req, res) => {
 	res.send('Server is running!')
 })
 
-///////////////////////////////
-// LISTENER
-////////////////////////////////
 app.listen(PORT, () => console.log(`listening on PORT ${PORT}`))
+
+module.exports = app
