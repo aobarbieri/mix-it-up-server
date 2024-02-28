@@ -1,6 +1,7 @@
 const mongoose = require('mongoose')
-const Schema = mongoose.Schema
 const validator = require('validator')
+const bcrypt = require('bcryptjs')
+const Schema = mongoose.Schema
 
 // Embedding - child subdocument (favorite) is embedded within its parent document (user)
 // Here is One - to - many- relationship ---<
@@ -30,11 +31,26 @@ const userSchema = new Schema(
 		passwordConfirm: {
 			type: String,
 			required: [true, 'Please confirm your password'],
+			validate: {
+				// This validation only works on CREATE and SAVE
+				validator: function (el) {
+					return el === this.password
+				},
+				message: 'Passwords are not the same!',
+			},
 		},
 		favorites: [favoriteSchema],
-		// googleId: { type: String, required: true },
 	},
 	{ timestamps: true }
 )
+
+// Pre save middleware - perfect time to manipulate the data
+userSchema.pre('save', async function (next) {
+	if (!this.isModified('password')) return next()
+
+	this.password = await bcrypt.hash(this.password, 12)
+	this.passwordConfirm = undefined
+	next()
+})
 
 module.exports = mongoose.model('User', userSchema)
