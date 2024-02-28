@@ -23,7 +23,8 @@
 		"mongoose": "^8.1.2",
 		"morgan": "^1.10.0",
 		"passport": "^0.7.0",
-		"passport-google-oauth": "^2.0.0"
+		"passport-google-oauth": "^2.0.0",
+		"validator": "^13.11.0"
 	},
 	"devDependencies": {
 		"nodemon": "^3.0.3"
