@@ -6,6 +6,7 @@ const cookieParser = require('cookie-parser')
 const morgan = require('morgan')
 const session = require('express-session')
 const passport = require('passport')
+const compression = require('compression')
 
 require('dotenv').config()
 require('./config/db.connection.js')
@@ -40,6 +41,7 @@ app.use(function (req, res, next) {
 app.use('/user', userRouter)
 app.use('/', favoriteRouter)
 
+app.use(compression())
 // test route
 app.get('/', (req, res) => {
 	res.send('Server is running!')

@@ -26,7 +26,6 @@ async function index(req, res, next) {
 async function create(req, res, next) {
 	try {
 		res.json(await User.create(req.body))
-		console.log(req.body)
 	} catch (error) {
 		res.status(400).json(error)
 	}
