@@ -9,8 +9,15 @@ module.exports = {
 }
 
 async function index(req, res, next) {
+	const users = await User.find()
 	try {
-		res.json(await User.find({}))
+		res.status(200).json({
+			status: 'success',
+			results: users.length,
+			data: {
+				users,
+			},
+		})
 	} catch (error) {
 		res.status(400).json(error)
 	}
