@@ -11,7 +11,6 @@ const compression = require('compression')
 require('dotenv').config()
 require('./config/db.connection.js')
 const { PORT } = process.env
-require('./config/passport')
 
 const userRouter = require('./routes/users')
 const favoriteRouter = require('./routes/favorites')
@@ -37,11 +36,11 @@ app.use(function (req, res, next) {
 	res.locals.user = req.user
 	next()
 })
+app.use(compression())
 
 app.use('/user', userRouter)
 app.use('/', favoriteRouter)
 
-app.use(compression())
 // test route
 app.get('/', (req, res) => {
 	res.send('Server is running!')
