@@ -1,6 +1,6 @@
 const jwt = require('jsonwebtoken')
-const { User } = require('../models')
 const AppError = require('./../utils/appError')
+const { User } = require('../models')
 
 function signToken(id) {
 	return jwt.sign({ id }, process.env.JWT_SECRET, { expiresIn: process.env.JWT_EXPIRES_IN })
@@ -9,6 +9,7 @@ function signToken(id) {
 module.exports = {
 	signup,
 	login,
+	protect,
 }
 
 async function signup(req, res, next) {
@@ -53,4 +54,22 @@ async function login(req, res, next) {
 		status: 'success',
 		token,
 	})
+}
+
+async function protect(req, res, next) {
+	// Getting token and check of it's there
+	let token
+	if (req.headers.authorization && req.headers.authorization.startsWith('Bearer')) {
+		token = req.headers.authorization.split(' ')[1]
+	}
+	console.log(token)
+	if (!token) {
+		return next(new AppError('You are not logged in! Please log in to get access.', 401))
+	}
+	// Verification token
+
+	// Check if user still exists
+
+	// Check if user changed password after the token was issued
+	next()
 }

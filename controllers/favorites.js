@@ -1,13 +1,26 @@
 const { User } = require('../models')
 
 module.exports = {
-	create,
+	index,
+	add,
 	delete: destroy,
 }
 
-async function create(req, res, next) {
-	const user = await User.findById(req.params.id)
-	user.favorites.push(req.body)
+async function index(req, res, next) {
+	const user = await User.findById(req.body._id)
+	try {
+		res.status(200).json({
+			status: 'success',
+			favorites: user.favorites,
+		})
+	} catch (error) {
+		res.status(400).json(error)
+	}
+}
+
+async function add(req, res, next) {
+	const user = await User.findById(req.body._id)
+	user.favorites.push(req.body.recipeID)
 	try {
 		res.status(201).json(await user.save())
 	} catch (error) {
